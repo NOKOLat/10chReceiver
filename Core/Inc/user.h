@@ -20,7 +20,7 @@ extern uint16_t adcValue;
 
 inline std::array<uint16_t,10> mixer(nokolat::SBUS_DATA &input){
 	const uint8_t ADC_THRESHOLD = 100;
-	const uint16_t AUTO_PERMISSION_THRESHOLD = 1500;
+	const uint16_t AUTO_MANULA_THRESHOLD = 1500;
 	static std::array<uint16_t,10> res;
 	auto it_res = res.begin();
 
@@ -30,7 +30,9 @@ inline std::array<uint16_t,10> mixer(nokolat::SBUS_DATA &input){
 	*it_res++ = input.at(3);
 	*it_res++ = input.at(4);
 	*it_res++ = input.at(5);
-	if(adcValue < ADC_THRESHOLD && input.at(5) > AUTO_PERMISSION_THRESHOLD){
+	if(adcValue < ADC_THRESHOLD && input.at(5) > AUTO_MANULA_THRESHOLD){
+		*it_res++ = input.at(6);
+	}else if(input.at(5) <= AUTO_MANULA_THRESHOLD){
 		*it_res++ = input.at(6);
 	}else{
 		it_res++;
